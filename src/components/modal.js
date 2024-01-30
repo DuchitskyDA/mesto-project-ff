@@ -1,30 +1,32 @@
-const createImagePopup = (image) => {
+const createImagePopup = (event) => {
   const popupImage = document.querySelector(".popup__image");
   const popupCaption = document.querySelector(".popup__caption");
   popupImage.src = event.target.src;
   popupCaption.textContent = event.target.alt;
-  openModal(image);
 };
 
-const openModal = (popup) => popup.classList.add("popup_is-opened");
+const openModal = (popup) => {
+  popup.classList.add("popup_is-opened");
+  document.addEventListener("keydown", closeModalOnEscKeydown);
+  document.addEventListener("click", closeModalOnOverlayClick);
+};
 
-const closeModal = (popup) =>
-  event.target.closest(".popup_is-opened").classList.remove("popup_is-opened");
+const closeModal = (popup) => {
+  popup.classList.remove("popup_is-opened");
+  document.removeEventListener("keydown", closeModalOnEscKeydown);
+  document.removeEventListener("click", closeModalOnOverlayClick);
+};
 
-const closeModalOnOverlayClick = () => {
+const closeModalOnOverlayClick = (event) => {
   if (event.target.classList.contains("popup_is-opened")) {
-    document.removeEventListener("click", closeModalOnOverlayClick);
-    closeModal();
+    closeModal(event.target);
   }
 };
 
-const closeModalOnEscKeydown = () => {
+const closeModalOnEscKeydown = (event) => {
   if (event.key === "Escape") {
-    const popup = document.querySelectorAll(".popup");
-    popup.forEach((item) => {
-      item.classList.remove("popup_is-opened");
-    });
-    document.removeEventListener("click", closeModalOnEscKeydown);
+    const popup = document.querySelector(".popup_is-opened");
+    closeModal(popup);
   }
 };
 

@@ -1,4 +1,8 @@
-const createCard = (cardData, deleteCard, tapOnLikeBtn) => {
+import { openModal } from "./modal";
+
+const createCard = (cardData, deleteCard, tapOnLikeBtn, createImagePopup) => {
+  const popupTypeImage = document.querySelector(".popup_type_image");
+  popupTypeImage.classList.add("popup_is-animated");
   const template = document.querySelector("#card-template").content;
   const card = template.querySelector(".card").cloneNode(true);
   const cardImage = card.querySelector(".card__image");
@@ -13,13 +17,17 @@ const createCard = (cardData, deleteCard, tapOnLikeBtn) => {
 
   cardDeleteButton.addEventListener("click", (e) => deleteCard(e));
   likeBtn.addEventListener("click", tapOnLikeBtn);
+  cardImage.addEventListener("click", () => {
+    createImagePopup(event);
+    openModal(popupTypeImage);
+  });
 
   return card;
 };
 
 const renderCard = (card, cardContainer) => cardContainer.append(card);
 
-const deleteCard = (e) => e.target.closest("li").remove();
+const deleteCard = (e) => e.target.closest(".card").remove();
 
 const tapOnLikeBtn = () => {
   event.target.classList.toggle("card__like-button_is-active");
