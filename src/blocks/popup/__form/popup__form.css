@@ -1,3 +1,11 @@
 .popup__form {
   margin-top: 27px;
 }
+
+.popup__form-input-error_active {
+  display: block;
+}
+
+.form__input-error_active {
+  color: red;
+}

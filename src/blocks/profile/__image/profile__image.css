@@ -1,4 +1,5 @@
 .profile__image {
+  position: relative;
   width: 120px;
   height: 120px;
   -webkit-border-radius: 50%;
@@ -7,6 +8,25 @@
   background-size: cover;
   background-position: center;
   margin: 0 29px 0 0;
+  cursor: pointer;
+}
+
+.profile__image:hover:before {
+  position: absolute;
+  opacity: 0.8;
+  background-color: black;
+  content: "";
+  block-size: 100%;
+  inline-size: 100%;
+}
+
+.profile__image:hover::after {
+  position: absolute;
+  content: url("../../../images/change-avatar.svg");
+  inline-size: 26px;
+  block-size: 26px;
+  inset-block-start: 47px;
+  inset-inline-start: 47px;
 }
 
 @media screen and (max-width: 740px) {
