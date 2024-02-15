@@ -16,21 +16,19 @@ const refreshUserData = (event) => {
     editFormElement.elements.name.value,
     editFormElement.elements.description.value
   )
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
     .then((userData) => {
-      editFormElement.querySelector(".popup__button").textContent = "Сохранить";
       closeModal(event.target.closest(".popup_is-opened"));
       editFormElement.reset();
       return setUserData(userData);
     })
     .catch((err) => {
       console.log(err); // выводим ошибку в консоль
-    });
+    })
+    .finally(
+      () =>
+        (editFormElement.querySelector(".popup__button").textContent =
+          "Сохранить")
+    );
 };
 
 export const handleEditFormSubmit = (event) => {

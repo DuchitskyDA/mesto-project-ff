@@ -1,12 +1,7 @@
 // Imports
 import "./pages/index.css";
 
-import {
-  createCard,
-  renderCard,
-  deleteCard,
-  tapOnLikeBtn,
-} from "./components/card";
+import { createCard, deleteCard, tapOnLikeBtn } from "./components/card";
 
 import { openModal, closeModal } from "./components/modal";
 
@@ -41,13 +36,17 @@ const avatarEditBtn = document.querySelector(".profile__image");
 
 const popupTypeEdit = document.querySelector(".popup_type_edit");
 const popupTypeNewCard = document.querySelector(".popup_type_new-card");
-const popupCloseBtn = document.querySelectorAll(".popup__close");
+const popupCloseBtns = document.querySelectorAll(".popup__close");
 const popupTypeImage = document.querySelector(".popup_type_image");
 const popupTypeAvatar = document.querySelector(".popup_type_avatar");
+const popupImage = document.querySelector(".popup__image");
+const formElement = popupTypeEdit.querySelector(".popup__form");
 
 const userAvatar = document.querySelector(".profile__image");
 const userName = document.querySelector(".profile__title");
 const userDescription = document.querySelector(".profile__description");
+
+export const renderCard = (card, cardContainer) => cardContainer.append(card);
 
 export let userData = {};
 // Animation
@@ -56,10 +55,10 @@ popupTypeEdit.classList.add("popup_is-animated");
 popupTypeNewCard.classList.add("popup_is-animated");
 
 export const createImagePopup = (e) => {
-  const popupImage = document.querySelector(".popup__image");
   const popupCaption = document.querySelector(".popup__caption");
   popupImage.src = e.target.src;
   popupCaption.textContent = e.target.alt;
+  popupImage.alt = e.target.alt;
   openModal(popupTypeImage);
 };
 
@@ -72,7 +71,6 @@ avatarFormElement.addEventListener("submit", avatarFormSubmit);
 // Modal listeners
 
 profileEditBtn.addEventListener("click", () => {
-  const formElement = popupTypeEdit.querySelector(".popup__form");
   clearValidation(formElement, {
     inputSelector: ".popup__input",
     inactiveButtonClass: "popup__button_disabled",
@@ -84,7 +82,6 @@ profileEditBtn.addEventListener("click", () => {
 });
 
 avatarEditBtn.addEventListener("click", () => {
-  const formElement = popupTypeAvatar.querySelector(".popup__form");
   clearValidation(formElement, {
     inputSelector: ".popup__input",
     inactiveButtonClass: "popup__button_disabled", // есть
@@ -95,7 +92,6 @@ avatarEditBtn.addEventListener("click", () => {
 });
 
 addBtn.addEventListener("click", () => {
-  const formElement = popupTypeNewCard.querySelector(".popup__form");
   clearValidation(formElement, {
     inputSelector: ".popup__input",
     inactiveButtonClass: "popup__button_disabled", // есть
@@ -105,7 +101,7 @@ addBtn.addEventListener("click", () => {
   openModal(popupTypeNewCard);
 });
 
-popupCloseBtn.forEach((btn) => {
+popupCloseBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
     closeModal(btn.closest(".popup"));
   });
@@ -134,7 +130,7 @@ export const setUserData = (data) => {
   userAvatar.setAttribute("style", `background-image: url('${data.avatar}')`);
   userName.textContent = data.name;
   userDescription.textContent = data.about;
-  userData = JSON.parse(JSON.stringify(data));
+  userData = { _id: data._id };
 };
 
 Promise.all([getCards(), getUserData()])

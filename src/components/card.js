@@ -28,11 +28,7 @@ export const createCard = (
   cardTitle.textContent = cardData.name;
 
   cardDeleteButton.addEventListener("click", (e) => {
-    deleteCardRequest(cardData._id).then((res) => {
-      if (res.ok) {
-        deleteCard(e);
-      }
-    });
+    deleteCardRequest(cardData._id).then(() => deleteCard(e));
   });
 
   likeBtn.addEventListener("click", (event) =>
@@ -54,18 +50,11 @@ const cardIsLiked = (likes, userId) => {
   }
 };
 
-export const renderCard = (card, cardContainer) => cardContainer.append(card);
-
 export const tapOnLikeBtn = (event, cardData, cardLikes) => {
   if (event.target.classList.contains("card__like-button_is-active")) {
     removeLikeRequest(cardData._id)
       .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((res) => {
+        event.target.classList.toggle("card__like-button_is-active");
         cardLikes.innerText = res.likes.length;
       })
       .catch((err) => {
@@ -74,17 +63,11 @@ export const tapOnLikeBtn = (event, cardData, cardLikes) => {
   } else {
     addLikeRequest(cardData._id)
       .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((res) => {
+        event.target.classList.toggle("card__like-button_is-active");
         cardLikes.innerText = res.likes.length;
       })
       .catch((err) => {
         console.log(err); // выводим ошибку в консоль
       });
   }
-  event.target.classList.toggle("card__like-button_is-active");
 };

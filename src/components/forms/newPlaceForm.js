@@ -14,17 +14,7 @@ export const addNewCard = (event, cards) => {
   event.preventDefault();
 
   postNewCardRequest(newCard)
-    .then((res) => {
-      if (res.ok) {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      }
-    })
     .then((card) => {
-      newCardFormElement.querySelector(".popup__button").textContent =
-        "Сохранить";
       cards.insertAdjacentElement(
         "afterbegin",
         createCard(userData, card, deleteCard, tapOnLikeBtn, createImagePopup),
@@ -35,5 +25,10 @@ export const addNewCard = (event, cards) => {
     })
     .catch((err) => {
       console.log(err); // выводим ошибку в консоль
-    });
+    })
+    .finally(
+      () =>
+        (newCardFormElement.querySelector(".popup__button").textContent =
+          "Сохранить")
+    );
 };
