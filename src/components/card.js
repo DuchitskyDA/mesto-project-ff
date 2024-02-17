@@ -28,7 +28,11 @@ export const createCard = (
   cardTitle.textContent = cardData.name;
 
   cardDeleteButton.addEventListener("click", (e) => {
-    deleteCardRequest(cardData._id).then(() => deleteCard(e));
+    deleteCardRequest(cardData._id)
+      .then(() => deleteCard(e))
+      .catch((err) => {
+        console.log(err); // выводим ошибку в консоль
+      });
   });
 
   likeBtn.addEventListener("click", (event) =>
